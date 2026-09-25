@@ -1,26 +1,129 @@
-# Letter Desk — AI-Powered Web App
+# ✉️ Letter Desk — AI Powered Letter Generator
 
-An AI-powered web application that helps students generate and edit formal letters using Google Gemini.
+Letter Desk is a simple AI-powered web application that helps users generate professional and personal letters instantly using AI.
 
-## Live Demo
+---
 
-https://iloveletters.netlify.app
+## 🌐 Live Demo
 
-## Features
+👉 https://iloveletters.netlify.app/
 
-- AI-generated formal letters
-- AI-based letter editing
-- Multiple language support
-- College letterhead support
-- PDF and TXT export
-- Direct printing
-- Secure server-side Gemini API integration
-- Netlify serverless backend
+---
 
-## What I Learned
+## 🚀 How to Run This Project Locally
 
-AI can help developers build applications faster, but generating code is only one part of development.
+### 1. Clone the Repository
 
-While building Letter Desk, I learned how to understand and connect different parts of an application, configure APIs and deployment settings, test the complete workflow, debug errors, and troubleshoot issues before deploying a working application.
+```bash
+git clone https://github.com/your-username/letter-desk.git
+cd letter-desk
+```
 
-This project helped me understand that **building an application is not just about writing code — debugging, testing, configuration, and deployment are equally important.**
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Set Up Environment Variables
+
+Create a `.env` file in the root directory and add:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+> ⚠️ Never share your API key publicly
+
+---
+
+### 4. Run Netlify Functions Locally
+
+Install Netlify CLI (if not installed):
+
+```bash
+npm install -g netlify-cli
+```
+
+Run the project:
+
+```bash
+netlify dev
+```
+
+---
+
+### 5. Open in Browser
+
+```
+http://localhost:8888
+```
+
+---
+
+## ⚙️ How It Works
+
+User → Frontend (index.html) → Netlify Function → Gemini API → Generated Letter → User
+
+---
+
+## 🛠 Tech Stack
+
+* HTML (with embedded CSS & JavaScript)
+* Node.js
+* Netlify Functions (Serverless)
+* Gemini API
+
+---
+
+## 📁 Project Structure
+
+```
+letter-desk/
+│── public/
+│   └── index.html   (contains HTML + CSS + JS)
+│── netlify/
+│   └── functions/
+│       └── generateLetter.js
+│── netlify.toml 
+│── README.md
+```
+
+---
+
+## 📌 Features
+
+* AI-powered letter generation
+* Simple single-page application
+* Fast serverless backend
+* Clean UI with integrated logic
+
+---
+
+## ❗ Note
+
+If the Gemini API is not responding:
+
+* Check your API key
+* Free tier may hit limits (503 errors)
+* Retry after some time
+
+---
+
+## 📈 Future Improvements
+
+* Separate CSS and JS for better scalability
+* Add multiple templates
+* Improve UI/UX
+* Add download (PDF/TXT)
+
+---
+
+## 🙌 Acknowledgement
+
+This project helped me understand real-world concepts like:
+
+* API integration
+* Serverless deployment
+* Debugging production issues
+* Handling API failures and retries
