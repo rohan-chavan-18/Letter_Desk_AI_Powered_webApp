@@ -10,6 +10,11 @@ Letter Desk is a simple AI-powered web application that helps users generate pro
 
 ---
 
+## Screenshot
+
+![Letter Desk Screenshot](screenshots/letter_desk_final_output.png)
+
+
 ## 🚀 How to Run This Project Locally
 
 ### 1. Clone the Repository
