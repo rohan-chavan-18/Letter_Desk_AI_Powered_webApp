@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Draft formal letters for school and college life — leave applications, certificate requests, complaints and more.">
+<title>Letter Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --desk: #C9BBA0;
+    --desk-2: #B7A788;
+    --paper: #FBF7EC;
+    --paper-shadow: rgba(35,32,25,0.22);
+    --ink: #23231F;
+    --ink-soft: #57534A;
+    --card: #FDFBF5;
+    --card-border: #D8CFB4;
+    --rule: #D8CFB4;
+    --accent: #9C3B3B;
+    --accent-ink: #FBF7EC;
+    --gold: #A9782F;
+    --chip: #F1EADA;
+    --chip-active-bg: #23231F;
+    --chip-active-fg: #FBF7EC;
+    --focus: #2F4A6B;
+    --danger: #9C3B3B;
+    --ok: #4C6B45;
+    --heading: var(--ink);
+    --sub: var(--ink-soft);
+    --chip-fg: var(--ink);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --desk: #201C15; --desk-2: #171410; --paper: #FBF7EC; --paper-shadow: rgba(0,0,0,0.55);
+      --ink: #23231F; --ink-soft: #57534A; --card: #2A251C; --card-border: #3E3728;
+      --rule: #4A4230; --accent: #C25C5C; --accent-ink: #241111; --gold: #C79A48;
+      --chip: #3A3325; --chip-active-bg: #FBF7EC; --chip-active-fg: #23231F; --focus: #C79A48;
+      --heading: #F2ECDC; --sub: #C9BFA0; --chip-fg: #F2ECDC;
+    }
+  }
+  :root[data-theme="dark"]{
+    --desk: #201C15; --desk-2: #171410; --paper: #FBF7EC; --paper-shadow: rgba(0,0,0,0.55);
+    --ink: #23231F; --ink-soft: #57534A; --card: #2A251C; --card-border: #3E3728;
+    --rule: #4A4230; --accent: #C25C5C; --accent-ink: #241111; --gold: #C79A48;
+    --chip: #3A3325; --chip-active-bg: #FBF7EC; --chip-active-fg: #23231F; --focus: #C79A48;
+    --heading: #F2ECDC; --sub: #C9BFA0; --chip-fg: #F2ECDC;
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: radial-gradient(ellipse at top left, var(--desk-2), var(--desk) 70%);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    padding: clamp(16px, 4vw, 48px);
+  }
+  .page{ max-width: 1220px; margin: 0 auto; }
+
+  header.top{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap: 16px; margin-bottom: clamp(20px, 4vw, 36px); flex-wrap: wrap;
+  }
+  header.top h1{
+    font-family: "Source Serif 4", Georgia, serif; font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px); margin: 0 0 6px 0; color: var(--heading);
+  }
+  header.top p{ margin:0; max-width: 48ch; color: var(--sub); font-size: 15px; line-height: 1.5; }
+
+  .layout{
+    display:grid; grid-template-columns: minmax(300px, 400px) 1fr;
+    gap: clamp(18px, 3vw, 32px); align-items: start;
+  }
+  @media (max-width: 880px){ .layout{ grid-template-columns: 1fr; } }
+
+  .wizard{
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 4px;
+    padding: clamp(20px, 3vw, 28px); box-shadow: 0 18px 40px -22px rgba(0,0,0,0.35);
+  }
+  .steps-track{ display:flex; align-items:center; gap: 6px; margin-bottom: 22px; }
+  .steps-track .dot{ width: 8px; height: 8px; border-radius: 50%; background: var(--rule); flex: 0 0 auto; }
+  .steps-track .bar{ height: 2px; flex: 1 1 auto; background: var(--rule); }
+  .steps-track .dot.done, .steps-track .bar.done{ background: var(--gold); }
+  .steps-track .dot.current{ background: var(--accent); transform: scale(1.3); }
+
+  .step-label{ font-size: 12px; color: var(--sub); margin-bottom: 4px; }
+  .step-question{
+    font-family: "Source Serif 4", Georgia, serif; font-size: clamp(19px, 2.4vw, 22px);
+    font-weight: 600; margin: 0 0 16px 0; line-height: 1.35; color: var(--heading);
+  }
+
+  /* Letter-type grid (the "column" of daily-life letter categories) */
+  .type-grid{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px;
+  }
+  @media (max-width: 420px){ .type-grid{ grid-template-columns: 1fr; } }
+  .type-card{
+    text-align:left; border: 1px solid var(--card-border); background: var(--chip);
+    color: var(--chip-fg); border-radius: 4px; padding: 10px 11px; cursor:pointer;
+    font-family: inherit; display:flex; flex-direction:column; gap: 2px;
+  }
+  .type-card .t-name{ font-size: 13px; font-weight: 600; line-height:1.3; }
+  .type-card .t-hint{ font-size: 11px; color: var(--sub); line-height:1.3; }
+  .type-card:hover{ border-color: var(--gold); }
+  .type-card.active{ background: var(--chip-active-bg); color: var(--chip-active-fg); border-color: var(--chip-active-bg); }
+  .type-card.active .t-hint{ color: #D8CFB4; }
+
+  .chips{ display:flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip{
+    border: 1px solid var(--card-border); background: var(--chip); color: var(--chip-fg);
+    padding: 8px 14px; border-radius: 100px; font-size: 13.5px; cursor: pointer;
+    font-family: inherit; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .chip:hover{ border-color: var(--gold); }
+  .chip.active{ background: var(--chip-active-bg); color: var(--chip-active-fg); border-color: var(--chip-active-bg); }
+  .chip:focus-visible, .type-card:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible{
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
+
+  label.field-label{ display:block; font-size: 12.5px; color: var(--sub); margin: 14px 0 6px 0; }
+  textarea, input[type="text"]{
+    width: 100%; font-family: inherit; font-size: 14.5px; padding: 10px 12px;
+    border-radius: 3px; border: 1px solid var(--card-border); background: var(--paper);
+    color: var(--ink); resize: vertical; line-height: 1.5;
+  }
+  textarea{ min-height: 96px; }
+  .field-error{ font-size: 12px; color: var(--danger); margin-top: 4px; min-height: 14px; }
+
+  .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 420px){ .grid-2{ grid-template-columns: 1fr; } }
+
+  .nav-row{ display:flex; justify-content: space-between; align-items:center; margin-top: 22px; gap: 10px; }
+  .btn{ font-family: inherit; font-size: 14px; padding: 10px 18px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; font-weight: 600; }
+  .btn-ghost{ background: transparent; border-color: var(--card-border); color: var(--sub); }
+  .btn-ghost:hover{ border-color: var(--gold); color: var(--ink); }
+  .btn-primary{ background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover{ filter: brightness(1.06); }
+  .btn-primary:disabled{ opacity: 0.5; cursor: not-allowed; }
+  .btn-primary:disabled:hover{ filter:none; }
+  .hint{ font-size: 12px; color: var(--sub); margin-top: 6px; }
+
+  .review-list{ list-style:none; padding:0; margin: 0 0 8px 0; font-size: 13.5px; }
+  .review-list li{ padding: 8px 0; border-bottom: 1px dashed var(--rule); display:flex; gap: 10px; justify-content: space-between; }
+  .review-list li span.k{ color: var(--sub); flex: 0 0 auto; }
+  .review-list li span.v{ text-align:right; color: var(--heading); }
+
+  .desk-slot{ position: sticky; top: 16px; }
+  .paper-wrap{ position: relative; }
+  /* Dropdowns: matched to the text inputs, with a gold chevron. */
+  select{
+    width: 100%; font-family: inherit; font-size: 14.5px;
+    padding: 10px 36px 10px 12px; line-height: 1.5;
+    border-radius: 3px; border: 1px solid var(--card-border);
+    background-color: var(--paper); color: var(--ink);
+    -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' fill='none' stroke='%23A9782F' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 11px 7px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  select:hover{ border-color: var(--gold); }
+  select:focus{ border-color: var(--gold); box-shadow: 0 0 0 3px rgba(169,120,47,0.15); }
+  /* Placeholder row reads as a hint until a real choice is made */
+  select.is-placeholder{ color: var(--sub); }
+  select option{ background: var(--paper); color: var(--ink); }
+  select option:disabled{ color: var(--sub); }
+  select:disabled{ opacity: .55; cursor: not-allowed; }
+
+  .lh-status{ display:flex; align-items:center; gap:8px; font-size:13px; color: var(--sub); margin-top:4px; }
+  .lh-dot{ width:8px; height:8px; border-radius:50%; background: var(--card-border); flex-shrink:0; }
+  .lh-status.saved{ color: var(--ok); font-weight:600; }
+  .lh-status.saved .lh-dot{ background: var(--ok); }
+  .lh-row{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+  .lh-name{ font-size:12.5px; color: var(--sub); }
+  .letterhead{
+    background-color: var(--paper); border-radius: 2px 2px 0 0;
+    padding: clamp(18px, 3.5vw, 30px) clamp(22px, 5vw, 52px) 0;
+    box-shadow: 0 -10px 22px -16px var(--paper-shadow);
+  }
+  .letterhead img{ display:block; width:100%; height:auto; mix-blend-mode: multiply; }
+  .letterhead .rule{ height:1px; background: var(--line); margin-top: clamp(14px, 2.5vw, 22px); }
+  .paper{
+    background-color: var(--paper); color: var(--ink); border-radius: 2px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.04) inset, 0 30px 60px -25px var(--paper-shadow), 0 8px 18px -10px var(--paper-shadow);
+    padding: clamp(26px, 5vw, 56px) clamp(22px, 5vw, 52px); min-height: 520px;
+    font-family: "Source Serif 4", Georgia, serif; font-size: 15.5px; line-height: 1.75;
+    white-space: pre-wrap; position: relative; word-wrap: break-word;
+  }
+  .has-letterhead .paper::before{ display:none; }
+  .paper::before{
+    content:""; position:absolute; left:0; right:0; top: 0; height: 6px;
+    background: linear-gradient(90deg, var(--gold), transparent 40%, transparent 60%, var(--gold)); opacity: 0.55;
+  }
+  .paper[contenteditable="true"]{ outline: none; }
+  .paper.empty{ color: var(--sub); font-style: italic; font-size: 15px; display:flex; align-items:center; justify-content:center; text-align:center; }
+
+  .paper-toolbar{ display:flex; justify-content: space-between; align-items:center; margin-top: 12px; gap: 10px; flex-wrap: wrap; }
+  .paper-toolbar .left-actions{ display:flex; gap:8px; flex-wrap: wrap; }
+  .icon-btn{
+    font-family: "IBM Plex Sans", sans-serif; font-size: 12.5px; padding: 8px 12px; border-radius: 3px;
+    border: 1px solid var(--card-border); background: var(--card); color: var(--heading); cursor: pointer;
+  }
+  .icon-btn:hover{ border-color: var(--gold); }
+  .icon-btn:disabled{ opacity:0.45; cursor:not-allowed; }
+
+  .refine-row{ display:flex; gap: 8px; margin-top: 14px; }
+  .refine-row input{ flex:1; }
+  .refine-row .btn{ flex: 0 0 auto; }
+
+  .status-line{ font-size: 12.5px; color: var(--sub); margin-top: 10px; min-height: 16px; display:flex; align-items:center; gap:8px; }
+  .status-line.error{ color: var(--danger); }
+  .spinner{
+    width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--rule);
+    border-top-color: var(--gold); animation: spin 0.8s linear infinite; flex: 0 0 auto;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .draft-banner{
+    font-size: 12px; color: var(--sub); background: var(--chip); border: 1px solid var(--card-border);
+    border-radius: 4px; padding: 8px 10px; margin-bottom: 14px; display:flex; justify-content:space-between; gap:10px; align-items:center;
+  }
+  .draft-banner button{ font-family: inherit; font-size: 12px; background:none; border:none; color: var(--accent); cursor:pointer; font-weight:600; padding:0; }
+
+  .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+  @media print{
+    body{ background: #fff; padding: 0; }
+    header.top, .wizard, .paper-toolbar, .refine-row, .status-line, .draft-banner{ display:none !important; }
+    .layout{ display:block; }
+    .paper{ box-shadow:none; min-height:auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div>
+      <h1>Letter Desk</h1>
+      <p>Pick what kind of letter you need, answer a few short questions, and get a properly formatted draft you can edit, copy or save.</p>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <section class="wizard" id="wizard" aria-label="Letter details form">
+      <div id="draftBanner" class="draft-banner" hidden>
+        <span>You have an unfinished draft from earlier.</span>
+        <button type="button" id="resumeBtn">Resume it</button>
+      </div>
+
+      <div class="steps-track" id="stepsTrack" role="presentation"></div>
+
+      <!-- Step 0: letter type -->
+      <div class="step" data-step="0">
+        <div class="step-label">Step 1 of 5</div>
+        <h2 class="step-question" id="q0">What kind of letter do you need?</h2>
+        <div class="type-grid" id="typeGrid" role="radiogroup" aria-labelledby="q0"></div>
+      </div>
+
+      <!-- Step 1: recipient -->
+      <div class="step" data-step="1" hidden>
+        <div class="step-label">Step 2 of 5</div>
+        <h2 class="step-question" id="q1">Who are you writing this letter to?</h2>
+        <div class="chips" id="recipientChips" role="radiogroup" aria-labelledby="q1"></div>
+        <div id="recipientCustomWrap" style="display:none;">
+          <label class="field-label" for="recipientCustom">Who, exactly?</label>
+          <input type="text" id="recipientCustom" placeholder="e.g. The Sports Coordinator">
+        </div>
+      </div>
+
+      <!-- Step 2: situation -->
+      <div class="step" data-step="2" hidden>
+        <div class="step-label">Step 3 of 5</div>
+        <h2 class="step-question">What's the letter about?</h2>
+        <textarea id="situation" placeholder="Write it like you'd tell a friend."></textarea>
+        <div class="field-error" id="situationError"></div>
+        <div class="hint">Just describe it naturally — the wording gets formalised for you.</div>
+      </div>
+
+      <!-- Step 3: details -->
+      <div class="step" data-step="3" hidden>
+        <div class="step-label">Step 4 of 5</div>
+        <h2 class="step-question">A few details about you</h2>
+        <div class="grid-2">
+          <div>
+            <label class="field-label" for="fullName">Your name</label>
+            <input type="text" id="fullName" placeholder="e.g. Aarav Sharma">
+          </div>
+          <div>
+            <label class="field-label" for="studentClass">Class / Year</label>
+            <select id="studentClass"></select>
+          </div>
+        </div>
+        <div class="field-error" id="nameError"></div>
+
+        <div id="classOtherWrap" style="display:none;">
+          <label class="field-label" for="studentClassOther">Enter your class / year</label>
+          <input type="text" id="studentClassOther" placeholder="e.g. Integrated M.Tech, 5th Year">
+        </div>
+
+        <label class="field-label" for="branch">Branch / Department</label>
+        <select id="branch"></select>
+        <div id="branchOtherWrap" style="display:none;">
+          <label class="field-label" for="branchOther">Enter your branch</label>
+          <input type="text" id="branchOther" placeholder="e.g. Textile Engineering">
+        </div>
+
+        <div class="grid-2" style="margin-top:14px;">
+          <div>
+            <label class="field-label" for="rollNo">Roll no.</label>
+            <input type="text" id="rollNo" placeholder="e.g. 42">
+          </div>
+          <div>
+            <label class="field-label" for="division">Division</label>
+            <input type="text" id="division" placeholder="e.g. A">
+          </div>
+        </div>
+
+        <label class="field-label" for="institution">School / College name (optional)</label>
+        <input type="text" id="institution" placeholder="e.g. St. Xavier's High School">
+        <label class="field-label" for="letterDate">Date</label>
+        <input type="text" id="letterDate">
+
+        <label class="field-label">College letterhead</label>
+        <div class="lh-status" id="lhStatus">
+          <span class="lh-dot" id="lhDot"></span>
+          <span id="lhStatusText">Not added on this device yet — upload it once below.</span>
+        </div>
+        <div class="lh-row">
+          <input type="file" id="letterheadFile" accept="image/png,image/jpeg,image/webp" style="display:none">
+          <button type="button" class="icon-btn" id="letterheadBtn">Choose image</button>
+          <button type="button" class="icon-btn" id="letterheadClear" hidden>Remove</button>
+          <span class="lh-name" id="letterheadName"></span>
+        </div>
+        <div class="hint" id="lhHint">Upload once on this device — it will be remembered automatically for every letter after this, on the preview and on page 1 of the PDF. Nobody else's device is affected; each person uploads their own copy the first time they use this on their phone or laptop.</div>
+      </div>
+
+      <!-- Step 4: tone + review -->
+      <div class="step" data-step="4" hidden>
+        <div class="step-label">Step 5 of 5</div>
+        <h2 class="step-question" id="q4">What tone should it have?</h2>
+        <div class="chips" id="toneChips" role="radiogroup" aria-labelledby="q4">
+          <button type="button" class="chip active" data-value="Formal and respectful" role="radio" aria-checked="true">Formal &amp; respectful</button>
+          <button type="button" class="chip" data-value="Warm and simple" role="radio" aria-checked="false">Warm &amp; simple</button>
+          <button type="button" class="chip" data-value="Firm and direct" role="radio" aria-checked="false">Firm &amp; direct</button>
+        </div>
+        <div style="margin-top:18px;">
+          <div class="step-label" style="margin-bottom:8px;">Quick check</div>
+          <ul class="review-list" id="reviewList"></ul>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="btn btn-ghost" id="backBtn">Back</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+      </div>
+    </section>
+
+    <section class="desk-slot" aria-label="Letter preview">
+      <div class="paper-wrap" id="paperWrap">
+        <div class="letterhead" id="letterheadBox" hidden>
+          <img id="letterheadImg" alt="College letterhead">
+          <div class="rule"></div>
+        </div>
+        <div class="paper empty" id="paper" aria-live="polite">Your letter will take shape here once you've answered the questions.</div>
+      </div>
+      <div class="paper-toolbar">
+        <div class="left-actions">
+          <button type="button" class="icon-btn" id="copyBtn" disabled>Copy letter</button>
+          <button type="button" class="icon-btn" id="downloadBtn" disabled>Download .txt</button>
+          <button type="button" class="icon-btn" id="pdfBtn" disabled>Download PDF</button>
+          <button type="button" class="icon-btn" id="printBtn" disabled>Print</button>
+          <button type="button" class="icon-btn" id="restartBtn">Start over</button>
+        </div>
+      </div>
+      <div class="refine-row" id="refineRow" style="display:none;">
+        <input type="text" id="refineInput" placeholder="Ask for a change — e.g. 'make it shorter' or 'mention I'll attach a medical certificate'">
+        <button type="button" class="btn btn-primary" id="refineBtn">Update</button>
+        <button type="button" class="btn btn-ghost" id="cancelBtn" style="display:none;">Stop</button>
+      </div>
+      <div class="status-line" id="statusLine" role="status"></div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- Daily-life letter categories: the "column" of real, common needs ----
+  var LETTER_TYPES = [
+    { id: 'leave', name: 'Leave / Absence', hint: 'Sick leave, family function, travel', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I was down with fever for 3 days last week and missed classes — I need to request leave and mention I'll have a doctor's note." },
+    { id: 'bonafide', name: 'Bonafide Certificate', hint: 'For passport, bank, scholarship etc.', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I need a bonafide certificate stating I'm a student here, for a passport application." },
+    { id: 'fee', name: 'Fee Concession / Receipt', hint: 'Ask for waiver, extension or a duplicate receipt', recipient: 'The Principal / Class Teacher', placeholder: "e.g. My father lost his job recently and I'd like to request a fee concession or an extended due date for this term." },
+    { id: 'permission', name: 'Permission Letter', hint: 'Trip, event, early leave, outing', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I want permission to leave campus early on Friday to attend my cousin's wedding out of town." },
+    { id: 'library', name: 'Library Request', hint: 'Lost book, fine waiver, card renewal', recipient: 'The Librarian', placeholder: "e.g. I lost a library book and want to know the replacement process, and request a partial fine waiver." },
+    { id: 'correction', name: 'Certificate Correction', hint: 'Name, DOB or spelling error', recipient: 'The Principal / Class Teacher', placeholder: "e.g. My name is misspelled on my marksheet as 'Aarav' instead of 'Aaravv' and I need it corrected." },
+    { id: 'transfer', name: 'Transfer Certificate', hint: 'TC / migration certificate request', recipient: 'The Principal / Class Teacher', placeholder: "e.g. My family is relocating to another city and I need my transfer certificate issued." },
+    { id: 'character', name: 'Character Certificate', hint: 'For admissions or job applications', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I need a character certificate for a college admission application." },
+    { id: 'complaint', name: 'Complaint', hint: 'Hostel, mess, facility, harassment', recipient: 'The Warden', placeholder: "e.g. The hostel Wi-Fi has been down for two weeks despite repeated requests, and I'd like this fixed." },
+    { id: 'scholarship', name: 'Scholarship / Financial Aid', hint: 'Apply or follow up on an application', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I'd like to apply for the merit scholarship and want to know what documents are required." },
+    { id: 'idcard', name: 'ID Card Request', hint: 'Lost or damaged ID card', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I lost my student ID card and need a duplicate issued." },
+    { id: 'extension', name: 'Extension Request', hint: 'Assignment, project or exam form deadline', recipient: 'The HOD / Dean', placeholder: "e.g. I was hospitalised last week and need a 5-day extension on my project submission." },
+    { id: 'job', name: 'Job / Internship Application', hint: 'Part-time work, summer internship', recipient: 'Other', placeholder: "e.g. I'm applying for the summer internship in your marketing team and want to introduce myself and my interest." },
+    { id: 'resignation', name: 'Resignation', hint: 'Club, committee or hostel position', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I need to step down as class representative due to my exam schedule and want to hand over responsibilities smoothly." },
+    { id: 'apology', name: 'Apology Letter', hint: 'Late submission, misconduct, absence', recipient: 'The Principal / Class Teacher', placeholder: "e.g. I want to apologise for missing the debate competition without informing anyone in advance." },
+    { id: 'other', name: 'Something else', hint: "It's not listed here", recipient: '', placeholder: "Describe your situation in your own words." }
+  ];
+
+  var RECIPIENTS = [
+    'The Principal / Class Teacher', 'The HOD / Dean', 'The Warden',
+    'The Librarian', 'The Bank Manager', 'Other'
+  ];
+
+  var CLASS_OPTIONS = [
+    'First Year (FY)', 'Second Year (SY)', 'Third Year (TY)', 'Final Year (Fourth Year)',
+    'Diploma - First Year', 'Diploma - Second Year', 'Diploma - Third Year',
+    'M.Tech / ME - First Year', 'M.Tech / ME - Second Year',
+    'MBA - First Year', 'MBA - Second Year', 'MCA - First Year', 'MCA - Second Year',
+    'Other'
+  ];
+
+  var BRANCH_OPTIONS = [
+    'Computer Engineering', 'Computer Science & Engineering', 'Information Technology',
+    'Artificial Intelligence & Data Science', 'Artificial Intelligence & Machine Learning',
+    'Electronics & Telecommunication Engineering', 'Electronics Engineering',
+    'Electrical Engineering', 'Mechanical Engineering', 'Civil Engineering',
+    'Chemical Engineering', 'Instrumentation Engineering', 'Automobile Engineering',
+    'Biotechnology', 'Food Technology', 'Other'
+  ];
+
+  // Optional: paste a base64 data URL here ("data:image/png;base64,....") to bake the
+  // letterhead permanently into the site for every visitor. Leave blank to rely on
+  // the in-app upload, which is remembered per device.
+  var LETTERHEAD_DATA_URL = '';
+  var LETTERHEAD_KEY = 'letterdesk.letterhead.v1';
+
+  var STORAGE_KEY = 'letterdesk.draft.v1';
+  var totalSteps = 5;
+
+  var state = {
+    step: 0,
+    letterType: '',
+    recipient: '',
+    recipientCustom: '',
+    situation: '',
+    fullName: '',
+    studentClass: '',
+    studentClassOther: '',
+    branch: '',
+    branchOther: '',
+    rollNo: '',
+    division: '',
+    institution: '',
+    letterDate: '',
+    tone: 'Formal and respectful'
+  };
+
+  var els = {
+    stepsTrack: document.getElementById('stepsTrack'),
+    nextBtn: document.getElementById('nextBtn'),
+    backBtn: document.getElementById('backBtn'),
+    paper: document.getElementById('paper'),
+    copyBtn: document.getElementById('copyBtn'),
+    downloadBtn: document.getElementById('downloadBtn'),
+    pdfBtn: document.getElementById('pdfBtn'),
+    printBtn: document.getElementById('printBtn'),
+    restartBtn: document.getElementById('restartBtn'),
+    refineRow: document.getElementById('refineRow'),
+    refineInput: document.getElementById('refineInput'),
+    refineBtn: document.getElementById('refineBtn'),
+    cancelBtn: document.getElementById('cancelBtn'),
+    statusLine: document.getElementById('statusLine'),
+    reviewList: document.getElementById('reviewList'),
+    typeGrid: document.getElementById('typeGrid'),
+    recipientChips: document.getElementById('recipientChips'),
+    recipientCustomWrap: document.getElementById('recipientCustomWrap'),
+    recipientCustom: document.getElementById('recipientCustom'),
+    situation: document.getElementById('situation'),
+    situationError: document.getElementById('situationError'),
+    fullName: document.getElementById('fullName'),
+    nameError: document.getElementById('nameError'),
+    studentClass: document.getElementById('studentClass'),
+    studentClassOther: document.getElementById('studentClassOther'),
+    classOtherWrap: document.getElementById('classOtherWrap'),
+    branch: document.getElementById('branch'),
+    branchOther: document.getElementById('branchOther'),
+    branchOtherWrap: document.getElementById('branchOtherWrap'),
+    rollNo: document.getElementById('rollNo'),
+    division: document.getElementById('division'),
+    paperWrap: document.getElementById('paperWrap'),
+    letterheadBox: document.getElementById('letterheadBox'),
+    letterheadImg: document.getElementById('letterheadImg'),
+    letterheadFile: document.getElementById('letterheadFile'),
+    letterheadBtn: document.getElementById('letterheadBtn'),
+    letterheadClear: document.getElementById('letterheadClear'),
+    letterheadName: document.getElementById('letterheadName'),
+    lhStatus: document.getElementById('lhStatus'),
+    lhStatusText: document.getElementById('lhStatusText'),
+    institution: document.getElementById('institution'),
+    letterDate: document.getElementById('letterDate'),
+    toneChips: document.getElementById('toneChips'),
+    draftBanner: document.getElementById('draftBanner'),
+    resumeBtn: document.getElementById('resumeBtn')
+  };
+
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+
+  function todayString(){
+    return new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  els.letterDate.value = todayString();
+  state.letterDate = els.letterDate.value;
+
+  // ---------- populate the class / branch dropdowns ----------
+  function fillSelect(sel, options, placeholder){
+    sel.innerHTML = '';
+    var ph = document.createElement('option');
+    ph.value = ''; ph.textContent = placeholder; ph.disabled = false;
+    sel.appendChild(ph);
+    options.forEach(function(o){
+      var opt = document.createElement('option');
+      opt.value = o; opt.textContent = o;
+      sel.appendChild(opt);
+    });
+  }
+  fillSelect(els.studentClass, CLASS_OPTIONS, 'Select class / year');
+  fillSelect(els.branch, BRANCH_OPTIONS, 'Select branch / department');
+
+  function syncSelectLook(){
+    els.studentClass.classList.toggle('is-placeholder', !els.studentClass.value);
+    els.branch.classList.toggle('is-placeholder', !els.branch.value);
+  }
+  syncSelectLook();
+
+  function syncOtherVisibility(){
+    syncSelectLook();
+    els.classOtherWrap.style.display = (state.studentClass === 'Other') ? 'block' : 'none';
+    els.branchOtherWrap.style.display = (state.branch === 'Other') ? 'block' : 'none';
+  }
+
+  // Human-readable "Class / Roll" line used in the letter body and sign-off.
+  function classRollLabel(){
+    var cls = state.studentClass === 'Other' ? (state.studentClassOther || '') : (state.studentClass || '');
+    var br  = state.branch === 'Other' ? (state.branchOther || '') : (state.branch || '');
+    var bits = [];
+    if(cls) bits.push(cls);
+    if(br) bits.push(br);
+    if(state.division) bits.push('Division ' + state.division);
+    if(state.rollNo) bits.push('Roll No. ' + state.rollNo);
+    return bits.join(', ');
+  }
+
+  // ---------- persistence (production feature: survive reloads / interruptions) ----------
+  function saveDraft(){
+    try{
+      var data = JSON.stringify(state);
+      window.localStorage.setItem(STORAGE_KEY, data);
+    }catch(err){ /* storage unavailable — silently skip, app still works */ }
+  }
+  function loadDraft(){
+    try{
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      var data = JSON.parse(raw);
+      if(data && typeof data === 'object') return data;
+    }catch(err){ /* corrupted or unavailable — ignore */ }
+    return null;
+  }
+  function clearDraft(){
+    try{ window.localStorage.removeItem(STORAGE_KEY); }catch(err){}
+  }
+
+  var savedDraft = loadDraft();
+  if(savedDraft && (savedDraft.situation || savedDraft.fullName)){
+    els.draftBanner.hidden = false;
+  }
+  els.resumeBtn.addEventListener('click', function(){
+    if(!savedDraft) return;
+    state = Object.assign(state, savedDraft);
+    state.step = 0;
+    hydrateFieldsFromState();
+    els.draftBanner.hidden = true;
+    showStep(0);
+  });
+
+  function hydrateFieldsFromState(){
+    els.recipientCustom.value = state.recipientCustom || '';
+    els.situation.value = state.situation || '';
+    els.fullName.value = state.fullName || '';
+    els.studentClass.value = state.studentClass || '';
+    els.studentClassOther.value = state.studentClassOther || '';
+    els.branch.value = state.branch || '';
+    els.branchOther.value = state.branchOther || '';
+    els.rollNo.value = state.rollNo || '';
+    els.division.value = state.division || '';
+    syncOtherVisibility();
+    els.institution.value = state.institution || '';
+    els.letterDate.value = state.letterDate || todayString();
+    renderTypeGrid();
+    renderRecipientChips();
+    syncToneChips();
+  }
+
+  // ---------- render type grid ----------
+  function renderTypeGrid(){
+    els.typeGrid.innerHTML = '';
+    LETTER_TYPES.forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'type-card' + (state.letterType === t.id ? ' active' : '');
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', state.letterType === t.id ? 'true' : 'false');
+      b.dataset.id = t.id;
+      b.innerHTML = '<span class="t-name"></span><span class="t-hint"></span>';
+      b.querySelector('.t-name').textContent = t.name;
+      b.querySelector('.t-hint').textContent = t.hint;
+      b.addEventListener('click', function(){
+        state.letterType = t.id;
+        if(t.recipient) state.recipient = t.recipient;
+        els.situation.placeholder = t.placeholder;
+        renderTypeGrid();
+        renderRecipientChips();
+        saveDraft();
+      });
+      els.typeGrid.appendChild(b);
+    });
+  }
+
+  function renderRecipientChips(){
+    els.recipientChips.innerHTML = '';
+    RECIPIENTS.forEach(function(r){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (state.recipient === r ? ' active' : '');
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', state.recipient === r ? 'true' : 'false');
+      b.dataset.value = r;
+      b.textContent = r === 'Other' ? 'Someone else' : r.replace('The ', '');
+      b.addEventListener('click', function(){
+        state.recipient = r;
+        els.recipientCustomWrap.style.display = r === 'Other' ? 'block' : 'none';
+        renderRecipientChips();
+        saveDraft();
+      });
+      els.recipientChips.appendChild(b);
+    });
+    els.recipientCustomWrap.style.display = state.recipient === 'Other' ? 'block' : 'none';
+  }
+
+  function syncToneChips(){
+    var chips = els.toneChips.querySelectorAll('.chip');
+    chips.forEach(function(c){
+      var active = c.dataset.value === state.tone;
+      c.classList.toggle('active', active);
+      c.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  }
+  els.toneChips.addEventListener('click', function(e){
+    var btn = e.target.closest('.chip');
+    if(!btn) return;
+    state.tone = btn.dataset.value;
+    syncToneChips();
+    saveDraft();
+  });
+
+  renderTypeGrid();
+  renderRecipientChips();
+
+  // ---------- step navigation ----------
+  function buildTrack(){
+    els.stepsTrack.innerHTML = '';
+    for(var i=0;i<totalSteps;i++){
+      var dot = document.createElement('div');
+      dot.className = 'dot' + (i < state.step ? ' done' : i === state.step ? ' current' : '');
+      els.stepsTrack.appendChild(dot);
+      if(i < totalSteps - 1){
+        var bar = document.createElement('div');
+        bar.className = 'bar' + (i < state.step ? ' done' : '');
+        els.stepsTrack.appendChild(bar);
+      }
+    }
+  }
+
+  function showStep(i){
+    steps.forEach(function(s){ s.hidden = Number(s.dataset.step) !== i; });
+    els.backBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+    els.nextBtn.textContent = i === totalSteps - 1 ? 'Generate letter' : 'Next';
+    buildTrack();
+    if(i === totalSteps - 1) renderReview();
+    var stepEl = steps[i];
+    var focusable = stepEl.querySelector('input, textarea, button');
+    if(focusable) { try{ focusable.focus({ preventScroll: true }); }catch(e){ focusable.focus(); } }
+  }
+
+  function renderReview(){
+    var who = state.recipient === 'Other' ? (state.recipientCustom || '—') : (state.recipient || '—');
+    var typeObj = LETTER_TYPES.filter(function(t){ return t.id === state.letterType; })[0];
+    var rows = [
+      ['Letter type', typeObj ? typeObj.name : '—'],
+      ['Writing to', who],
+      ['About', truncate(state.situation, 60)],
+      ['Name', state.fullName || '—'],
+      ['Class / Branch', classRollLabel() || '—']
+    ];
+    els.reviewList.innerHTML = '';
+    rows.forEach(function(pair){
+      var li = document.createElement('li');
+      var k = document.createElement('span'); k.className = 'k'; k.textContent = pair[0];
+      var v = document.createElement('span'); v.className = 'v'; v.textContent = pair[1];
+      li.appendChild(k); li.appendChild(v);
+      els.reviewList.appendChild(li);
+    });
+  }
+
+  function truncate(str, n){
+    str = str || '—';
+    return str.length > n ? str.slice(0, n) + '…' : str;
+  }
+
+  function validateStep(i){
+    if(i === 0){
+      if(!state.letterType){ flashInvalid(els.typeGrid); return false; }
+    }
+    if(i === 1){
+      if(!state.recipient){ flashInvalid(els.recipientChips); return false; }
+      if(state.recipient === 'Other' && !state.recipientCustom.trim()){ els.recipientCustom.focus(); return false; }
+    }
+    if(i === 2){
+      els.situationError.textContent = '';
+      if(!state.situation.trim()){ els.situationError.textContent = 'Tell us a little about the situation first.'; els.situation.focus(); return false; }
+    }
+    if(i === 3){
+      els.nameError.textContent = '';
+      if(!state.fullName.trim()){ els.nameError.textContent = 'Your name is needed for the signature block.'; els.fullName.focus(); return false; }
+    }
+    return true;
+  }
+
+  function flashInvalid(el){
+    el.style.outline = '2px solid var(--accent)';
+    el.style.outlineOffset = '2px';
+    setTimeout(function(){ el.style.outline = 'none'; }, 900);
+  }
+
+  els.recipientCustom.addEventListener('input', function(e){ state.recipientCustom = e.target.value; saveDraft(); });
+  els.situation.addEventListener('input', function(e){ state.situation = e.target.value; saveDraft(); });
+  els.fullName.addEventListener('input', function(e){ state.fullName = e.target.value; saveDraft(); });
+  els.studentClass.addEventListener('change', function(e){
+    state.studentClass = e.target.value; syncOtherVisibility(); saveDraft();
+  });
+  els.studentClassOther.addEventListener('input', function(e){ state.studentClassOther = e.target.value; saveDraft(); });
+  els.branch.addEventListener('change', function(e){
+    state.branch = e.target.value; syncOtherVisibility(); saveDraft();
+  });
+  els.branchOther.addEventListener('input', function(e){ state.branchOther = e.target.value; saveDraft(); });
+  els.rollNo.addEventListener('input', function(e){ state.rollNo = e.target.value; saveDraft(); });
+  els.division.addEventListener('input', function(e){ state.division = e.target.value; saveDraft(); });
+  els.institution.addEventListener('input', function(e){ state.institution = e.target.value; saveDraft(); });
+  els.letterDate.addEventListener('input', function(e){ state.letterDate = e.target.value; saveDraft(); });
+
+  els.nextBtn.addEventListener('click', function(){
+    if(!validateStep(state.step)) return;
+    if(state.step < totalSteps - 1){
+      state.step++;
+      showStep(state.step);
+      saveDraft();
+    } else {
+      generateLetter();
+    }
+  });
+  els.backBtn.addEventListener('click', function(){
+    if(state.step > 0){ state.step--; showStep(state.step); }
+  });
+
+  els.restartBtn.addEventListener('click', function(){
+    if(isGenerating) abortGeneration();
+    state = { step: 0, letterType: '', recipient: '', recipientCustom: '', situation: '', fullName: '', studentClass: '', studentClassOther: '', branch: '', branchOther: '', rollNo: '', division: '', institution: '', letterDate: todayString(), tone: 'Formal and respectful' };
+    hydrateFieldsFromState();
+    showStep(0);
+    els.paper.className = 'paper empty';
+    els.paper.textContent = "Your letter will take shape here once you've answered the questions.";
+    els.paper.removeAttribute('contenteditable');
+    els.copyBtn.disabled = true;
+    els.downloadBtn.disabled = true;
+    els.pdfBtn.disabled = true;
+    els.printBtn.disabled = true;
+    els.refineRow.style.display = 'none';
+    els.statusLine.textContent = '';
+    els.statusLine.classList.remove('error');
+    conversation = [];
+    clearDraft();
+    els.draftBanner.hidden = true;
+  });
+
+  showStep(0);
+
+  // ---------- AI drafting: use the optional Claude artifact capability when
+  // available; otherwise use the Netlify Gemini serverless backend. ----------
+  var sampleFn = null;
+  var sampleReady = (async function(){
+    try{
+      if(typeof claude !== 'undefined' && claude && typeof claude.use === 'function'){
+        sampleFn = await claude.use('sample');
+      }
+    }catch(err){ sampleFn = null; }
+    return sampleFn;
+  })();
+
+  var BACKEND_ENDPOINT = '/.netlify/functions/generate-letter';
+
+  async function askAI(messages, opts){
+    opts = opts || {};
+    await sampleReady;
+
+    if(sampleFn){
+      try{
+        return await sampleFn(messages, {
+          modelTier: 'default',
+          signal: opts.signal,
+          onText: opts.onText
+        });
+      }catch(err){
+        if(err && err.code === 'not_granted'){ sampleFn = null; /* fall through to backend */ }
+        else { throw err; }
+      }
+    }
+
+    var resp;
+    try{
+      resp = await fetch(BACKEND_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ messages: messages }),
+        signal: opts.signal,
+        cache: 'no-store'
+      });
+    }catch(err){
+      if(err && err.name === 'AbortError'){ throw { code: 'cancelled', message: 'Cancelled' }; }
+      throw { code: 'unavailable', message: 'Could not reach the Gemini drafting function. Check that the latest Netlify deploy includes the function.' };
+    }
+
+    var data = null;
+    var raw = '';
+    try{
+      raw = await resp.text();
+      data = raw ? JSON.parse(raw) : null;
+    }catch(err){
+      data = null;
+    }
+
+    if(!resp.ok){
+      var serverMessage = (data && data.error) || raw || ('Server error (' + resp.status + ')');
+      if(resp.status === 404){
+        serverMessage = 'Gemini function was not found (404). The current Netlify deploy does not contain /.netlify/functions/generate-letter.';
+      } else if(resp.status === 502 && data && data.upstreamStatus){
+        serverMessage = 'Gemini API returned HTTP ' + data.upstreamStatus + ': ' + (data.error || 'The selected Gemini model is unavailable to this API key.');
+      } else if(resp.status === 401 || resp.status === 403){
+        serverMessage = 'Gemini rejected the API key (' + resp.status + '). Check ROHAN_SECURE_GEMINI_KEY and its value.';
+      } else if(resp.status === 429){
+        throw { code: 'rate_limited', message: serverMessage };
+      }
+      throw { code: 'unavailable', message: serverMessage };
+    }
+
+    if(!data || typeof data.text !== 'string' || !data.text.trim()){
+      throw { code: 'unavailable', message: 'Gemini function returned an unexpected response. Check the Netlify Function logs.' };
+    }
+    if(opts.onText){ opts.onText({ text: data.text }); }
+    return { text: data.text, truncated: false };
+  }
+
+  function aiIsUsable(){
+    // Do not permanently disable Gemini after one failed request. A deploy,
+    // cold start, transient network issue, or temporary API failure can recover.
+    return true;
+  }
+
+  var conversation = [];
+  var isGenerating = false;
+  var currentAbort = null;
+
+  function buildPrompt(){
+    var typeObj = LETTER_TYPES.filter(function(t){ return t.id === state.letterType; })[0];
+    var who = state.recipient === 'Other' ? state.recipientCustom : state.recipient;
+    return [
+      "Write a complete, ready-to-send formal letter for a student's daily-life situation.",
+      "",
+      "Letter category: " + (typeObj ? typeObj.name : "General request"),
+      "Recipient: " + who,
+      "Situation, in the student's own words: " + state.situation,
+      "Student's name: " + (state.fullName || "[Name]"),
+      "Class / Year: " + ((state.studentClass === 'Other' ? state.studentClassOther : state.studentClass) || "[Class]"),
+      "Branch / Department: " + ((state.branch === 'Other' ? state.branchOther : state.branch) || "[Branch]"),
+      "Division: " + (state.division || "[Division]"),
+      "Roll number: " + (state.rollNo || "[Roll No.]"),
+      "Institution: " + (state.institution || "(not given — omit or leave a generic placeholder, do not invent a name)"),
+      "Date: " + (state.letterDate || "[Date]"),
+      "Requested tone: " + state.tone,
+      "",
+      "Formatting rules:",
+      "- Use a standard formal letter structure: date, receiver's address block starting with 'To,', a 'Subject:' line, a respectful salutation, 2-4 short body paragraphs, a polite closing, and a signature block with the student's name followed by their class, branch, division and roll number on the lines beneath it.",
+      "- Match the structure and content to the letter category above (for example a certificate request states clearly what document is needed and why; a complaint states the issue and a reasonable resolution; a job/internship application briefly introduces the student and their interest).",
+      "- Keep the language natural for a student — clear and polite, not overly ornate.",
+      "- Only use facts given above. If something needed for the structure wasn't given (like an institution name or address), leave a short bracketed placeholder such as [Institution Name] rather than inventing one.",
+      "- Output ONLY the letter text itself — no explanations, no markdown, no code fences, no commentary before or after."
+    ].join("\n");
+  }
+
+  // Type-specific fallback copy, used only when the AI drafting call is unavailable.
+  // Keeps the subject line and closing ask distinct per category rather than one generic shape.
+  var FALLBACK_COPY = {
+    leave:       { subject: "Application for Leave", ask: "kindly grant me leave for the period mentioned and excuse my absence from classes" },
+    bonafide:    { subject: "Request for Bonafide Certificate", ask: "kindly issue a bonafide certificate confirming my enrolment at the earliest" },
+    fee:         { subject: "Request Regarding Fee", ask: "kindly consider my request regarding the fee as described above" },
+    permission:  { subject: "Request for Permission", ask: "kindly grant permission for the above" },
+    library:     { subject: "Regarding Library Records", ask: "kindly assist me with this library matter" },
+    correction:  { subject: "Request for Correction of Records", ask: "kindly correct the record as described and issue the corrected document" },
+    transfer:    { subject: "Request for Transfer Certificate", ask: "kindly issue my transfer certificate at the earliest" },
+    character:   { subject: "Request for Character Certificate", ask: "kindly issue a character certificate for my records" },
+    complaint:   { subject: "Complaint Regarding the Matter Described Below", ask: "kindly look into this matter and take suitable action" },
+    scholarship: { subject: "Regarding Scholarship / Financial Aid", ask: "kindly share the process and requirements for the same" },
+    idcard:      { subject: "Request for Duplicate ID Card", ask: "kindly issue a duplicate ID card at the earliest" },
+    extension:   { subject: "Request for Extension of Deadline", ask: "kindly grant an extension as described above" },
+    job:         { subject: "Application for the Position", ask: "kindly consider my application and let me know the next steps" },
+    resignation: { subject: "Letter of Resignation", ask: "kindly accept my resignation and advise on handover" },
+    apology:     { subject: "Letter of Apology", ask: "kindly accept my apology regarding the above" },
+    other:       { subject: "Request", ask: "kindly consider my request" }
+  };
+
+  function templateFallback(){
+    var who = state.recipient === 'Other' ? state.recipientCustom : state.recipient;
+    var name = state.fullName || '[Your Name]';
+    var cls = classRollLabel() || '[Class / Branch / Roll Number]';
+    var inst = state.institution ? state.institution : '[Institution Name]';
+    var copy = FALLBACK_COPY[state.letterType] || FALLBACK_COPY.other;
+    return [
+      state.letterDate, "", "To,", who || '[Recipient]', inst, "",
+      "Subject: " + copy.subject, "",
+      "Respected Sir/Madam,", "",
+      "I am " + name + ", a student of " + cls + " at " + inst + ". " + state.situation, "",
+      "I request you to " + copy.ask + ". I would be grateful for your understanding in this matter.", "",
+      "Thanking you,", "", "Yours sincerely,", name, cls
+    ].join("\n");
+  }
+
+  function messageForError(err){
+    var code = err && err.code;
+    if(code === 'not_granted') return "AI drafting needs your permission in this view — check for a permission prompt, allow it, then try again.";
+    if(code === 'rate_limited') return "That's a lot of requests in a row — wait a few seconds and try again.";
+    if(code === 'cancelled') return "Stopped.";
+    return "Could not reach the drafting assistant" + (err && err.message ? (": " + err.message) : "") + ".";
+  }
+
+  function setStatus(text, isError){
+    els.statusLine.classList.toggle('error', !!isError);
+    els.statusLine.innerHTML = '';
+    if(isGenerating){
+      var sp = document.createElement('span'); sp.className = 'spinner';
+      els.statusLine.appendChild(sp);
+    }
+    var span = document.createElement('span'); span.textContent = text;
+    els.statusLine.appendChild(span);
+  }
+
+  function setGenerating(on){
+    isGenerating = on;
+    els.nextBtn.disabled = on;
+    els.refineBtn.disabled = on;
+    els.cancelBtn.style.display = on ? 'inline-block' : 'none';
+  }
+
+  function abortGeneration(){
+    if(currentAbort){ try{ currentAbort.abort(); }catch(e){} }
+    setGenerating(false);
+    setStatus('Stopped.', false);
+  }
+  els.cancelBtn.addEventListener('click', abortGeneration);
+
+  async function generateLetter(){
+    els.paper.classList.remove('empty');
+    els.paper.removeAttribute('contenteditable');
+    els.paper.textContent = '';
+    els.copyBtn.disabled = true;
+    els.downloadBtn.disabled = true;
+    els.pdfBtn.disabled = true;
+    els.printBtn.disabled = true;
+    els.refineRow.style.display = 'none';
+    setGenerating(true);
+    setStatus('Drafting your letter…', false);
+
+    await sampleReady;
+
+    if(!aiIsUsable()){
+      setGenerating(false);
+      var fallbackText = templateFallback();
+      typeOut(fallbackText, function(){
+        finishGeneration(fallbackText);
+        setStatus("AI drafting isn't available in this view — here's a basic starting template you can edit.", false);
+      });
+      return;
+    }
+
+    var prompt = buildPrompt();
+    conversation = [{ role: 'user', content: prompt }];
+    currentAbort = new AbortController();
+    var timeoutId = setTimeout(function(){ if(currentAbort) currentAbort.abort(); }, 75000);
+
+    try{
+      var result = await askAI(conversation, {
+        signal: currentAbort.signal,
+        onText: function(payload){ els.paper.textContent = payload.text; }
+      });
+      clearTimeout(timeoutId);
+      conversation.push({ role: 'assistant', content: result.text });
+      finishGeneration(result.text);
+      setGenerating(false);
+      setStatus(result.truncated ? 'Draft ready (response was long and may be trimmed).' : 'Draft ready — edit directly on the page, or ask for a change below.', false);
+      clearDraft();
+    }catch(err){
+      clearTimeout(timeoutId);
+      setGenerating(false);
+      var partial = els.paper.textContent && els.paper.textContent.trim();
+      if(err && err.code === 'cancelled'){
+        if(partial){ finishGeneration(partial); }
+        else { els.paper.className = 'paper empty'; els.paper.textContent = "Generation stopped. Press \u201cGenerate letter\u201d to try again."; }
+        return;
+      }
+      if(partial && partial.length > 40){
+        finishGeneration(partial);
+        setStatus(messageForError(err) + ' Kept the partial draft below — you can edit it directly.', true);
+      } else {
+        var text = templateFallback();
+        typeOut(text, function(){
+          finishGeneration(text);
+          setStatus(messageForError(err) + ' Showing a basic template instead.', true);
+        });
+      }
+    }
+  }
+
+  function typeOut(text, done){
+    var i = 0;
+    els.paper.textContent = '';
+    function step(){
+      i += Math.max(2, Math.floor(text.length / 120));
+      els.paper.textContent = text.slice(0, i);
+      if(i < text.length){ requestAnimationFrame(step); } else { done(); }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function finishGeneration(text){
+    els.paper.textContent = text;
+    els.paper.setAttribute('contenteditable', 'true');
+    els.copyBtn.disabled = false;
+    els.downloadBtn.disabled = false;
+    els.pdfBtn.disabled = false;
+    els.printBtn.disabled = false;
+    els.refineRow.style.display = 'flex';
+  }
+
+  els.copyBtn.addEventListener('click', async function(){
+    try{
+      await navigator.clipboard.writeText(els.paper.textContent);
+      setStatus('Copied to clipboard.', false);
+    }catch(err){
+      setStatus('Could not copy automatically — select the text and copy manually.', true);
+    }
+  });
+
+  els.printBtn.addEventListener('click', function(){
+    window.print();
+  });
+
+  var downloadsFn = null;
+  (async function(){
+    try{
+      if(typeof claude !== 'undefined' && claude && typeof claude.use === 'function'){
+        downloadsFn = await claude.use('downloads');
+      }
+    }catch(err){ downloadsFn = null; }
+  })();
+
+  els.downloadBtn.addEventListener('click', async function(){
+    var content = els.paper.textContent;
+    var filename = 'letter-' + (state.fullName ? state.fullName.replace(/\s+/g,'-').toLowerCase() : 'draft') + '.txt';
+    if(downloadsFn){
+      try{
+        await downloadsFn.save({ filename: filename, data: content });
+        setStatus('Saved.', false);
+        return;
+      }catch(err){ /* fall through to blob method */ }
+    }
+    try{
+      var blob = new Blob([content], { type: 'text/plain' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setStatus('Downloaded.', false);
+    }catch(err){
+      setStatus('Could not download — copy the text instead.', true);
+    }
+  });
+
+  // ---------- college letterhead (stored per device, drawn on preview + PDF) ----------
+  var letterhead = { dataUrl: '', w: 0, h: 0, name: '' };
+
+  function loadStoredLetterhead(){
+    try{
+      var raw = window.localStorage.getItem(LETTERHEAD_KEY);
+      if(raw){ var d = JSON.parse(raw); if(d && d.dataUrl) return d; }
+    }catch(err){}
+    if(LETTERHEAD_DATA_URL){ return { dataUrl: LETTERHEAD_DATA_URL, w: 0, h: 0, name: 'Built-in letterhead' }; }
+    return null;
+  }
+
+  function applyLetterhead(data){
+    if(!data || !data.dataUrl){
+      letterhead = { dataUrl: '', w: 0, h: 0, name: '' };
+      els.letterheadBox.hidden = true;
+      els.letterheadImg.removeAttribute('src');
+      els.paperWrap.classList.remove('has-letterhead');
+      els.letterheadClear.hidden = true;
+      els.letterheadName.textContent = '';
+      els.lhStatus.classList.remove('saved');
+      els.lhStatusText.textContent = 'Not added on this device yet — upload it once below.';
+      return;
+    }
+    letterhead = data;
+    els.letterheadImg.onload = function(){
+      letterhead.w = els.letterheadImg.naturalWidth || 0;
+      letterhead.h = els.letterheadImg.naturalHeight || 0;
+    };
+    els.letterheadImg.src = data.dataUrl;
+    els.letterheadBox.hidden = false;
+    els.paperWrap.classList.add('has-letterhead');
+    els.letterheadClear.hidden = false;
+    els.letterheadName.textContent = data.name || '';
+    els.lhStatus.classList.add('saved');
+    els.lhStatusText.textContent = 'Saved on this device — used automatically every time.';
+  }
+
+  function storeLetterhead(data){
+    try{
+      if(data){ window.localStorage.setItem(LETTERHEAD_KEY, JSON.stringify(data)); }
+      else { window.localStorage.removeItem(LETTERHEAD_KEY); }
+    }catch(err){
+      setStatus('Letterhead is showing now, but this device could not save it for next time.', true);
+    }
+  }
+
+  els.letterheadBtn.addEventListener('click', function(){ els.letterheadFile.click(); });
+
+  els.letterheadFile.addEventListener('change', function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    if(file.size > 2.5 * 1024 * 1024){
+      setStatus('That image is larger than 2.5 MB — please use a smaller or compressed version.', true);
+      els.letterheadFile.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var probe = new Image();
+      probe.onload = function(){
+        var data = { dataUrl: String(reader.result), w: probe.naturalWidth, h: probe.naturalHeight, name: file.name };
+        applyLetterhead(data);
+        storeLetterhead(data);
+        setStatus('Letterhead added.', false);
+      };
+      probe.onerror = function(){ setStatus('That file could not be read as an image.', true); };
+      probe.src = String(reader.result);
+    };
+    reader.onerror = function(){ setStatus('That file could not be read.', true); };
+    reader.readAsDataURL(file);
+    els.letterheadFile.value = '';
+  });
+
+  els.letterheadClear.addEventListener('click', function(){
+    applyLetterhead(null);
+    storeLetterhead(null);
+    setStatus('Letterhead removed.', false);
+  });
+
+  applyLetterhead(loadStoredLetterhead());
+
+  // ---- PDF export: laid out as a real single-column business letter ----
+  // (date, receiver block, subject, body, sign-off) with wrapping, sane
+  // margins and automatic page breaks — not just a screenshot of the page.
+  function buildPdfBlob(text){
+    if(typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF){ return null; }
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'pt', format: 'a4' });
+
+    var margin = 72;               // 1 inch — standard formal-letter margin
+    var pageWidth = doc.internal.pageSize.getWidth();
+    var pageHeight = doc.internal.pageSize.getHeight();
+    var usableWidth = pageWidth - margin * 2;
+    var bottomLimit = pageHeight - margin;
+    var fontSize = 12;
+    var lineHeight = fontSize * 1.4;
+
+    doc.setFont('times', 'normal');
+    doc.setFontSize(fontSize);
+
+    var y = margin;
+
+    // Letterhead banner across the top of page 1 only, like a real college letter.
+    if(letterhead.dataUrl && letterhead.w && letterhead.h){
+      try{
+        var fmt = /^data:image\/jpe?g/i.test(letterhead.dataUrl) ? 'JPEG'
+                : (/^data:image\/webp/i.test(letterhead.dataUrl) ? 'WEBP' : 'PNG');
+        var topPad = 40;
+        var imgW = usableWidth;
+        var imgH = imgW * (letterhead.h / letterhead.w);
+        var maxImgH = pageHeight * 0.22;              // never let it swallow the page
+        if(imgH > maxImgH){ imgH = maxImgH; imgW = imgH * (letterhead.w / letterhead.h); }
+        var imgX = margin + (usableWidth - imgW) / 2;
+        doc.addImage(letterhead.dataUrl, fmt, imgX, topPad, imgW, imgH);
+        var ruleY = topPad + imgH + 14;
+        doc.setDrawColor(190); doc.setLineWidth(0.7);
+        doc.line(margin, ruleY, pageWidth - margin, ruleY);
+        y = ruleY + 26;
+      }catch(err){ y = margin; }
+    }
+
+    var paragraphs = text.split('\n');
+
+    paragraphs.forEach(function(rawLine){
+      var line = rawLine.replace(/\s+$/, '');
+
+      if(line.trim() === ''){
+        y += lineHeight * 0.75;               // tighter gap for blank lines between blocks
+        if(y > bottomLimit){ doc.addPage(); y = margin; }
+        return;
+      }
+
+      // Subject / salutation / closing lines get a touch of emphasis, matching convention
+      var isSubject = /^subject\s*:/i.test(line.trim());
+      var isSignOff = /^(yours sincerely|yours faithfully|thanking you|regards|sincerely)[, ]*$/i.test(line.trim());
+      doc.setFont('times', isSubject ? 'bold' : 'normal');
+
+      var wrapped = doc.splitTextToSize(line, usableWidth);
+      wrapped.forEach(function(w){
+        if(y > bottomLimit){ doc.addPage(); y = margin; }
+        doc.text(w, margin, y);
+        y += lineHeight;
+      });
+      if(isSignOff){ y += lineHeight * 0.4; }
+      doc.setFont('times', 'normal');
+    });
+
+    return doc.output('blob');
+  }
+
+  els.pdfBtn.addEventListener('click', async function(){
+    var content = els.paper.textContent;
+    if(!content || !content.trim()){ return; }
+    els.pdfBtn.disabled = true;
+    var blob;
+    try{
+      blob = buildPdfBlob(content);
+    }catch(err){
+      blob = null;
+    }
+    if(!blob){
+      setStatus('PDF export is unavailable right now — try Print and choose "Save as PDF" instead.', true);
+      els.pdfBtn.disabled = false;
+      return;
+    }
+    var filename = 'letter-' + (state.fullName ? state.fullName.replace(/\s+/g,'-').toLowerCase() : 'draft') + '.pdf';
+
+    if(downloadsFn){
+      try{
+        await downloadsFn.save({ filename: filename, data: blob });
+        setStatus('PDF saved.', false);
+        els.pdfBtn.disabled = false;
+        return;
+      }catch(err){
+        var code = err && err.code;
+        if(code === 'declined'){ setStatus('Save cancelled.', false); els.pdfBtn.disabled = false; return; }
+        if(code === 'rate_limited'){ setStatus('A save prompt is already open — try again in a moment.', true); els.pdfBtn.disabled = false; return; }
+        // otherwise fall through to the manual method below
+      }
+    }
+    try{
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      setStatus('PDF downloaded.', false);
+    }catch(err){
+      setStatus('Could not export PDF — try Print > Save as PDF instead.', true);
+    }
+    els.pdfBtn.disabled = false;
+  });
+
+  els.refineBtn.addEventListener('click', async function(){
+    var instruction = els.refineInput.value.trim();
+    if(!instruction) return;
+    if(!aiIsUsable()){
+      setStatus("AI editing isn't available in this view — edit the letter directly on the page.", true);
+      return;
+    }
+    setGenerating(true);
+    setStatus('Updating your letter…', false);
+
+    // If the student hand-edited the paper (contenteditable), make sure the model
+    // revises what's actually on the page rather than a stale earlier draft.
+    var currentText = els.paper.textContent;
+    if(conversation.length === 0){
+      conversation = [
+        { role: 'user', content: buildPrompt() },
+        { role: 'assistant', content: currentText }
+      ];
+    } else if(conversation[conversation.length - 1].role === 'assistant'){
+      conversation[conversation.length - 1].content = currentText;
+    }
+    conversation.push({ role: 'user', content: 'Revise the letter above as follows: ' + instruction + '. Output ONLY the full revised letter text, nothing else.' });
+
+    currentAbort = new AbortController();
+    var timeoutId = setTimeout(function(){ if(currentAbort) currentAbort.abort(); }, 75000);
+    try{
+      var result = await askAI(conversation, {
+        signal: currentAbort.signal,
+        onText: function(payload){ els.paper.textContent = payload.text; }
+      });
+      clearTimeout(timeoutId);
+      conversation.push({ role: 'assistant', content: result.text });
+      els.paper.textContent = result.text;
+      els.refineInput.value = '';
+      setGenerating(false);
+      setStatus('Updated.', false);
+    }catch(err){
+      clearTimeout(timeoutId);
+      setGenerating(false);
+      conversation.pop();
+      els.paper.textContent = currentText;
+      if(err && err.code === 'cancelled'){ setStatus('Update stopped.', false); return; }
+      if(err && err.code === 'not_granted'){ sampleFn = null; }
+      setStatus(messageForError(err), true);
+    }
+  });
+
+  els.refineInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); els.refineBtn.click(); }
+  });
+
+})();
+</script>
+</body>
+</html>
