@@ -107,6 +107,8 @@ letter-desk/
 
 ## ❗ Note
 
+# MODEL : Gimini 3.6 flash
+
 If the Gemini API is not responding:
 
 * Check your API key
